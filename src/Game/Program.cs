@@ -1,6 +1,5 @@
 ﻿using SFML.Window;
 using System;
-using System.Collections.Generic;
 
 namespace Game
 {
@@ -9,6 +8,8 @@ namespace Game
         public static void Main(string[] args)
         {
             var window = new Window(new VideoMode(800, 600), "Gamewindow");
+            window.SetFramerateLimit(60);
+            window.SetKeyRepeatEnabled(false);
 
             window.Closed += OnClose;
             var inputHandler = new InputHandler();
