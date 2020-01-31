@@ -9,4 +9,8 @@
   <ItemGroup>
     <PackageReference Include="SFML.Net" Version="2.5.0" />
   </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Game.Snake\Game.Snake.csproj" />
+  </ItemGroup>
 </Project>

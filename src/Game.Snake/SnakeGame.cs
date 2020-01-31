@@ -34,6 +34,11 @@ namespace Game.Snake
 
         public void Update()
         {
+            if (!IsInsideBounds(_snakeBody.Head.AddSnakeDirection(_currentDirection)))
+            {
+                return;
+            }
+
             SetTile(_snakeBody.Tail, TileContent.Empty);
             _snakeBody.Move(_currentDirection);
 
@@ -57,6 +62,11 @@ namespace Game.Snake
                 return;
             }
             _map[coordinate.X, coordinate.Y] = content;
+        }
+
+        private bool IsInsideBounds(Vector2u coordinate)
+        {
+            return coordinate.X < MapSize.X && coordinate.Y < MapSize.Y;
         }
     }
 }
