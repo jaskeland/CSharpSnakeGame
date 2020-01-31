@@ -37,15 +37,18 @@ namespace Game
                     {
                         for (int x = 0; x < snakeGame.Map.GetLength(0); x++)
                         {
-                            Console.Write($"[{snakeGame.Map[x, y]}]");
+                            Console.Write($"[{snakeGame.Map[x, y].ToString().PadRight(10)}]");
                         }
                         Console.Write("\n");
                     }
 
                     timeSinceLastUpdate = clock.ElapsedTime;
-                }
-                if (inputHandler.IsKeyPressed(Keyboard.Key.Space))
-                {
+
+
+                    if (inputHandler.IsKeyPressed(Keyboard.Key.Space))
+                    {
+                        snakeGame.AddFood(1);
+                    }
                 }
 
                 if (inputHandler.IsKeyPressed(Keyboard.Key.Left))

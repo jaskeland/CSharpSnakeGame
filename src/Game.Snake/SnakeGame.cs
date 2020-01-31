@@ -29,9 +29,16 @@ namespace Game.Snake
 
         public void Update()
         {
-            if (!_map.IsInsideBounds(_snakeBody.Head.AddSnakeDirection(_currentDirection)))
+            var newHeadPosition = _snakeBody.Head.AddSnakeDirection(_currentDirection);
+            if (!_map.IsInsideBounds(newHeadPosition))
             {
                 return;
+            }
+
+            if (_map.ContainsFood(newHeadPosition))
+            {
+                _snakeBody.Grow();
+                _map.SetTile(newHeadPosition, TileContent.Empty);
             }
 
             _map.SetTile(_snakeBody.Tail, TileContent.Empty);

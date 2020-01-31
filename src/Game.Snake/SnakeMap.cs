@@ -69,6 +69,11 @@ namespace Game.Snake
             return coordinate.X < MapSize.X && coordinate.Y < MapSize.Y;
         }
 
+        public bool ContainsFood(Vector2u coordinate)
+        {
+            return IsInsideBounds(coordinate) && _map[coordinate.X, coordinate.Y].HasFlag(TileContent.Food);
+        }
+
         private IEnumerable<Vector2u> GetCoordinatesForEmptyTiles()
         {
             for (uint x = 0; x < MapSize.X; x++)
