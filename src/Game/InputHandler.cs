@@ -10,7 +10,7 @@ namespace Game
     /// </summary>
     public class InputHandler
     {
-        private HashSet<KeyEventArgs> _pressedKeys;
+        private readonly HashSet<KeyEventArgs> _pressedKeys;
 
         public InputHandler()
         {
