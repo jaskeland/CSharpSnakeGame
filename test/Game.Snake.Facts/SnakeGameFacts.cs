@@ -13,8 +13,20 @@ namespace Game.Snake.Facts
         {
             var snakeGame = new SnakeGame(new Vector2u(sizeX, sizeY));
 
-            Assert.Equal(expectedX, snakeGame.SnakeBody.Head.X);
-            Assert.Equal(expectedY, snakeGame.SnakeBody.Head.Y);
+            Assert.Equal(expectedX, snakeGame.Head.X);
+            Assert.Equal(expectedY, snakeGame.Head.Y);
+        }
+
+        [Fact]
+        public void Can_move_snake_with_single_segment()
+        {
+            var snakeGame = new SnakeGame(new Vector2u(10, 10));
+
+            snakeGame.SetDirection(SnakeDirection.Down);
+            snakeGame.Update();
+
+            Assert.Equal(TileContent.SnakeHead, snakeGame.Map[5, 6]);
+            Assert.Equal(TileContent.Empty, snakeGame.Map[5, 5]);
         }
     }
 }

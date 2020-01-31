@@ -17,17 +17,32 @@ namespace Game.Snake
 
             _snakeBody = new SnakeBody(mapSize / 2);
             _random = randomSeed == 0 ? new Random() : new Random(randomSeed);
+
+            SetTile(_snakeBody.Head, TileContent.SnakeHead);
         }
 
         public Vector2u MapSize { get; }
 
-        private TileContent[,] _map;
-        private SnakeBody _snakeBody;
+        public Vector2u Head => _snakeBody.Head;
+
+        public TileContent[,] Map => (TileContent[,])_map.Clone();
+
+        private readonly TileContent[,] _map;
+        private readonly SnakeBody _snakeBody;
         private Random _random;
         private SnakeDirection _currentDirection;
 
         public void Update()
         {
+            SetTile(_snakeBody.Tail, TileContent.Empty);
+            _snakeBody.Move(_currentDirection);
+
+            foreach (var segment in _snakeBody.BodySegments)
+            {
+                SetTile(segment, TileContent.SnakeBody);
+            }
+
+            SetTile(_snakeBody.Head, TileContent.SnakeHead);
         }
 
         public void SetDirection(SnakeDirection direction)

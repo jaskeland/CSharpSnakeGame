@@ -13,6 +13,7 @@ namespace Game.Snake
         }
 
         public Vector2u Head => _bodySegments[0];
+        public Vector2u Tail => _bodySegments[^1];
         public IReadOnlyCollection<Vector2u> BodySegments => _bodySegments.AsReadOnly();
 
         private readonly List<Vector2u> _bodySegments;
