@@ -49,5 +49,10 @@ namespace Game.Snake
         {
             _currentDirection = direction;
         }
+
+        public void AddFood(uint amountToAdd)
+        {
+            _map.AddFoodAtRandomLocation(amountToAdd);
+        }
     }
 }
