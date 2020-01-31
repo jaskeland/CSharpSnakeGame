@@ -42,6 +42,11 @@ namespace Game.Snake
 
             for (var i = 0; i < amountToAdd; i++)
             {
+                if (!emptySpots.Any())
+                {
+                    break;
+                }
+
                 var nextEmptyIndex = _random.Next(0, emptySpots.Count - 1);
                 var newFoodCoordinate = emptySpots[nextEmptyIndex];
 
@@ -52,7 +57,7 @@ namespace Game.Snake
 
         public void SetTile(Vector2u coordinate, TileContent content)
         {
-            if (coordinate.X > MapSize.X || coordinate.Y > MapSize.Y)
+            if (!IsInsideBounds(coordinate))
             {
                 return;
             }
