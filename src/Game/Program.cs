@@ -2,6 +2,8 @@
 using System;
 using Game.Snake;
 using SFML.System;
+using SFML.Graphics;
+using Game.Snake.Rendering;
 
 namespace Game
 {
@@ -9,7 +11,7 @@ namespace Game
     {
         public static void Main(string[] args)
         {
-            var window = new Window(new VideoMode(800, 600), "Gamewindow");
+            var window = new RenderWindow(new VideoMode(800, 600), "Gamewindow");
             window.SetFramerateLimit(60);
             window.SetKeyRepeatEnabled(false);
 
@@ -19,7 +21,9 @@ namespace Game
             window.KeyPressed += inputHandler.OnKeyPressed;
             window.KeyReleased += inputHandler.OnKeyReleased;
 
-            var snakeGame = new SnakeGame(new Vector2u(10, 10));
+            Vector2u mapSize = new Vector2u(50, 50);
+            var snakeGame = new SnakeGame(mapSize);
+            var snakeGameDrawable = new SnakeGameBoardDrawable(mapSize, window.Size);
 
             // Rudimentary gameloop
             var clock = new Clock();
@@ -27,29 +31,6 @@ namespace Game
             while (window.IsOpen)
             {
                 window.DispatchEvents();
-
-                if (clock.ElapsedTime - timeSinceLastUpdate > Time.FromMilliseconds(100))
-                {
-                    Console.Clear();
-                    snakeGame.Update();
-
-                    for (int y = 0; y < snakeGame.Map.GetLength(1); y++)
-                    {
-                        for (int x = 0; x < snakeGame.Map.GetLength(0); x++)
-                        {
-                            Console.Write($"[{snakeGame.Map[x, y].ToString().PadRight(10)}]");
-                        }
-                        Console.Write("\n");
-                    }
-
-                    timeSinceLastUpdate = clock.ElapsedTime;
-
-
-                    if (inputHandler.IsKeyPressed(Keyboard.Key.Space))
-                    {
-                        snakeGame.AddFood(1);
-                    }
-                }
 
                 if (inputHandler.IsKeyPressed(Keyboard.Key.Left))
                 {
@@ -67,6 +48,21 @@ namespace Game
                 {
                     snakeGame.SetDirection(SnakeDirection.Down);
                 }
+
+                snakeGame.Update();
+                snakeGameDrawable.Clear();
+                snakeGameDrawable.AddMap(snakeGame.Map);
+
+                timeSinceLastUpdate = clock.ElapsedTime;
+
+                if (inputHandler.IsKeyPressed(Keyboard.Key.Space))
+                {
+                    snakeGame.AddFood(1);
+                }
+
+                window.Clear();
+                window.Draw(snakeGameDrawable);
+                window.Display();
             }
         }
 
