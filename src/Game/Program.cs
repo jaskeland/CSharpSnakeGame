@@ -16,14 +16,12 @@ namespace Game
             window.SetKeyRepeatEnabled(false);
 
             window.Closed += OnClose;
-            var inputHandler = new InputHandler();
-
-            window.KeyPressed += inputHandler.OnKeyPressed;
-            window.KeyReleased += inputHandler.OnKeyReleased;
 
             Vector2u mapSize = new Vector2u(50, 50);
             var snakeGame = new SnakeGame(mapSize);
             var snakeGameDrawable = new SnakeGameBoardDrawable(mapSize, window.Size);
+
+            window.KeyPressed += snakeGame.OnKeyPressed;
 
             // Rudimentary gameloop
             var clock = new Clock();
@@ -32,33 +30,11 @@ namespace Game
             {
                 window.DispatchEvents();
 
-                if (inputHandler.IsKeyPressed(Keyboard.Key.Left))
-                {
-                    snakeGame.SetDirection(SnakeDirection.Left);
-                }
-                if (inputHandler.IsKeyPressed(Keyboard.Key.Right))
-                {
-                    snakeGame.SetDirection(SnakeDirection.Right);
-                }
-                if (inputHandler.IsKeyPressed(Keyboard.Key.Up))
-                {
-                    snakeGame.SetDirection(SnakeDirection.Up);
-                }
-                if (inputHandler.IsKeyPressed(Keyboard.Key.Down))
-                {
-                    snakeGame.SetDirection(SnakeDirection.Down);
-                }
-
                 snakeGame.Update();
                 snakeGameDrawable.Clear();
                 snakeGameDrawable.AddMap(snakeGame.Map);
 
                 timeSinceLastUpdate = clock.ElapsedTime;
-
-                if (inputHandler.IsKeyPressed(Keyboard.Key.Space))
-                {
-                    snakeGame.AddFood(1);
-                }
 
                 window.Clear();
                 window.Draw(snakeGameDrawable);

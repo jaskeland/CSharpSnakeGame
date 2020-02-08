@@ -1,5 +1,7 @@
 ﻿using SFML.System;
+using SFML.Window;
 using System;
+using System.Linq;
 
 namespace Game.Snake
 {
@@ -17,6 +19,7 @@ namespace Game.Snake
             _snakeBody = new SnakeBody(mapSize / 2);
 
             _map.SetTile(_snakeBody.Head, TileContent.SnakeHead);
+            AddFood(1);
         }
 
         public Vector2u Head => _snakeBody.Head;
@@ -39,6 +42,7 @@ namespace Game.Snake
             {
                 _snakeBody.Grow();
                 _map.SetTile(newHeadPosition, TileContent.Empty);
+                AddFood(1);
             }
 
             _map.SetTile(_snakeBody.Tail, TileContent.Empty);
@@ -52,8 +56,47 @@ namespace Game.Snake
             _map.SetTile(_snakeBody.Head, TileContent.SnakeHead);
         }
 
+        public void OnKeyPressed(object? sender, KeyEventArgs eventArgs)
+        {
+            switch (eventArgs.Code)
+            {
+                case Keyboard.Key.W:
+                case Keyboard.Key.Up:
+                    SetDirection(SnakeDirection.Up);
+                    break;
+
+                case Keyboard.Key.S:
+                case Keyboard.Key.Down:
+                    SetDirection(SnakeDirection.Down);
+                    break;
+
+                case Keyboard.Key.A:
+                case Keyboard.Key.Left:
+                    SetDirection(SnakeDirection.Left);
+                    break;
+
+                case Keyboard.Key.D:
+                case Keyboard.Key.Right:
+                    SetDirection(SnakeDirection.Right);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
         public void SetDirection(SnakeDirection direction)
         {
+            if (_currentDirection.IsOpposite(direction))
+                return;
+
+            var desiredPosition = _snakeBody.Head.AddSnakeDirection(direction);
+            if (!_map.IsInsideBounds(desiredPosition))
+                return;
+
+            if (_snakeBody.BodySegments.Contains(desiredPosition))
+                return;
+
             _currentDirection = direction;
         }
 
